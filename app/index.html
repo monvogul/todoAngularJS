@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta charset="UTF-8">
+
+    <title>AngularJS Todo App</title>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,700,900' rel='stylesheet' type='text/css'>
+    <link href="assets/styles/main.css" rel="stylesheet">
+
+</head>
+<body ng-app="todoApp" ng-controller="TodoCtrl as tdc">
+<header><h2 class="heading">todos</h2></header>
+<section class="newNote">
+
+    <input type="text" id="insertNote" ng-model="tdc.newNote" required ng-keypress="tdc.addNewNote($event)"/>
+    <label class="placeholder" for="insertNote">Things to do... </label>
+</section>
+
+<section>
+    <ul id="noteList" class="container" ng-if="items && items.length>0" ng-cloak>
+        <li class="fade" ng-if="items && items.length>0"  ng-class="tdc.editItem[$index]===true  ? 'editing' : ''"  ng-dblclick="tdc.editItem[$index]=true"  ng-repeat="item in items | filter:{completed:tdc.query}">
+            <div>
+               <input id="{{item.id}}" type="checkbox" ng-checked="item.completed" ng-model="item.completed"/>
+                 <label   for="{{item.id}}">{{item.text}}</label>
+                <input type="text" class="edit" ng-keypress="tdc.finishEditing($event,$index)"  ng-model="item.text"/>
+                <i class="fa fa-trash-o delItem"  ng-click="tdc.removeNote($index)"></i>
+            </div>
+        </li>
+    </ul>
+</section>
+<footer class="filters" id="filterDiv">
+    <button id="all"  ng-click="tdc.query=''"  ng-class="tdc.query==='' ? 'btn-circ active' : 'btn-circ'">All</button>
+    <button id="incomplete"  ng-click="tdc.query = 'false'"  ng-class="tdc.query==='false' ? 'btn-circ active' : 'btn-circ'">Incomplete</button>
+    <button id="complete" ng-click="tdc.query='true'"  ng-class="tdc.query==='true' ? 'btn-circ active' : 'btn-circ'">Completed</button>
+
+</footer>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.js"></script>
+
+<script src="app.js"></script>
+<script src="service/storageService.js"></script>
+</body>
+
+</html>
